@@ -1,0 +1,13 @@
+package improbable.player;
+
+import "improbable/vector3.schema";
+
+type MovementUpdate {
+  Vector3d position = 1;
+  float timestamp = 2;
+}
+
+component PlayerMovement {
+    id = 1200;
+    event MovementUpdate movement_update;
+}

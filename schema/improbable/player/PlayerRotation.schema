@@ -1,0 +1,12 @@
+package improbable.player;
+
+type RotationUpdate {
+  float yaw = 1;
+  float timestamp = 2;
+}
+
+component PlayerRotation {
+    id = 1100;
+    float yaw = 1;
+    event RotationUpdate rotation_update;
+}
