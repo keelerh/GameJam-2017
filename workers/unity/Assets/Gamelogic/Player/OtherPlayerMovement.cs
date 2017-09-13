@@ -8,12 +8,13 @@ using Quaternion = UnityEngine.Quaternion;
 using System;
 
 namespace Assets.Gamelogic.Player
-{
+{   
     public class OtherPlayerMovement : MonoBehaviour
     {
         [Require] private Position.Reader PositionReader;
         [Require] private PlayerMovement.Reader PlayerMovementReader;
         [Require] private PlayerRotation.Reader PlayerRotationReader;
+        [Require] private Health.Reader HealthReader;
 
         private InterpolationData<Vector3> positionInterpolationRoot;
         private Queue<InterpolationData<Vector3>> positionUpdates = new Queue<InterpolationData<Vector3>>();
@@ -27,6 +28,8 @@ namespace Assets.Gamelogic.Player
         [SerializeField] private Collider playerCollider;
         [SerializeField] private Animator playerAnimator;
 
+        private bool alreadyDead = false;
+
         private void OnEnable()
         {
             transform.position = PositionReader.Data.coords.ToUnityVector();
@@ -35,6 +38,8 @@ namespace Assets.Gamelogic.Player
             PlayerMovementReader.MovementUpdateTriggered.Add(SaveMovementUpdate);
             PlayerRotationReader.RotationUpdateTriggered.Add(SaveRotationUpdate);
             DisableAuthoritativeRigidbodyBehaviour();
+
+            alreadyDead = false;
         }
 
         private void OnDisable()
@@ -117,10 +122,22 @@ namespace Assets.Gamelogic.Player
 
         private void UpdateAnimation()
         {
-            Debug.LogWarning("UpdateAnimation");
+            // Debug.LogWarning("UpdateAnimation");
+
+            if (!alreadyDead && HealthReader.Data.currentHealth <= 0)
+            {
+                playerAnimator.CrossFade("Dead", 0.5f);
+                alreadyDead = true;
+                return;
+            }
+
+            if (alreadyDead){
+                return;
+            }
+
             if (ShouldUpdateAnimation(playerRigidbody.velocity.magnitude))
             {
-                Debug.LogWarning("ShouldUpdateAnimation");
+                // Debug.LogWarning("ShouldUpdateAnimation");
                 var playerMovement = transform.InverseTransformDirection(Vector3.ClampMagnitude(playerRigidbody.velocity, 1));
                 var playerTurn = Mathf.Atan2(playerMovement.x, playerMovement.z);
                 var playerMotion = playerMovement.magnitude;

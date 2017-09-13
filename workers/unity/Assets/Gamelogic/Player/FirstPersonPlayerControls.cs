@@ -56,7 +56,8 @@ namespace Assets.Gamelogic.Player
 
         private void UpdateDesiredMovementDirection()
         {
-            Vector3 inputDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Mathf.Clamp01(Input.GetAxis("Vertical")));
+            Vector3 inputDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+			// Previously clamped here ^
             Vector3 movementDirection = (playerRigidbody.rotation * inputDirection).FlattenVector().normalized;
             targetVelocity = movementDirection * SimulationSettings.PlayerMovementSpeed;
         }

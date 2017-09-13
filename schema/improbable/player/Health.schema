@@ -1,0 +1,16 @@
+package improbable.player;
+
+	
+type DamageRequest {
+    uint32 amount = 1;
+}
+type DamageResponse {
+    uint32 dealt_damage = 1;
+}
+
+component Health {
+    // Component ID. Must be unique within the project.
+    id = 1006;
+    int32 current_health = 1;
+    command DamageResponse take_damage(DamageRequest);
+}

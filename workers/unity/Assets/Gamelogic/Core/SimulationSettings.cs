@@ -42,6 +42,8 @@ namespace Assets.Gamelogic.Core
 
         public static readonly float OtherPlayerUpdateDelay = 0.5f;
 
+        public static readonly float ClientConnectionTimeoutSecs = 7;
+
         // Third Person Controls
         public static int ThirdPersonRotateCameraMouseButton = 1;
         public static float ThirdPersonCameraSensitivity = 4;
