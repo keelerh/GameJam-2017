@@ -65,6 +65,18 @@ namespace Assets.Gamelogic.EntityTemplates
 
 			return template;
 		}
+
+		public static Entity CreateBananaTemplate(Vector3 initialPosition)
+		{
+			var template = EntityBuilder.Begin()
+				.AddPositionComponent(initialPosition, CommonRequirementSets.PhysicsOnly)
+				.AddMetadataComponent(SimulationSettings.BananaPrefabName)
+				.SetPersistence(true)
+				.SetReadAcl(CommonRequirementSets.PhysicsOrVisual)
+				.Build();
+
+			return template;
+		}
 			
     }
 }

@@ -29,10 +29,6 @@ namespace Assets.Gamelogic.Player
 
 		private Canvas scoreCanvasUI;
 		private Text totalPointsGUI;
-//		private Text playerStatus;
-
-
-//		public GameObject text;
 
         void OnEnable()
         {
@@ -49,9 +45,7 @@ namespace Assets.Gamelogic.Player
 //				scoreCanvasUI.enabled = false;
 //				updateGUI(0);
 			}
-//			playerStatus = this.gameObject.GetComponentInChildren<Text>();
-//			playerStatus.text = "player_" + this.gameObject.EntityId().ToString();
-
+				
         }
 
         void Update()
@@ -78,7 +72,3 @@ namespace Assets.Gamelogic.Player
         }
     }
 }
-
-
-
-

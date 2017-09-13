@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using System;
+using UnityEngine.UI;
 
 namespace Assets.Gamelogic.Player
 {   
@@ -30,6 +31,9 @@ namespace Assets.Gamelogic.Player
 
         private bool alreadyDead = false;
 
+		public GameObject nameCanvas;
+		private Text playerStatus;
+
         private void OnEnable()
         {
             transform.position = PositionReader.Data.coords.ToUnityVector();
@@ -40,6 +44,10 @@ namespace Assets.Gamelogic.Player
             DisableAuthoritativeRigidbodyBehaviour();
 
             alreadyDead = false;
+
+			Debug.LogWarning ("player_" + this.gameObject.EntityId().ToString());
+			playerStatus = nameCanvas.GetComponentInChildren<Text>();
+			playerStatus.text = "player_" + this.gameObject.EntityId().ToString();
         }
 
         private void OnDisable()

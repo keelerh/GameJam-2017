@@ -22,9 +22,9 @@ namespace Assets.Gamelogic.UI
 
 		void OnEnable()
 		{
-			playerStatus = this.gameObject.GetComponentInChildren<Text>();
+//			playerStatus = this.gameObject.GetComponentInChildren<Text>();
 //			playerStatus.text = "player_" + this.transform.parent.gameObject.EntityId().ToString();
-			playerStatus.text = "player_" + this.transform.parent.gameObject.transform.name;
+//			playerStatus.text = "player_" + this.transform.parent.gameObject.transform.name;
 		}
 
 		private void LateUpdate()
