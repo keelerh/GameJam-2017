@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Gamelogic.Core
 {
@@ -7,13 +8,13 @@ namespace Assets.Gamelogic.Core
         public static readonly string PlayerPrefabName = "Player";
         public static readonly string PlayerCreatorPrefabName = "PlayerCreator";
         public static readonly string CubePrefabName = "Cube";
-		public static readonly string InstructionSenderPrefabName = "InstructionSender";
+	public static readonly string LaboratoryPrefabName = "Laboratory";
 
         public static readonly float HeartbeatCheckIntervalSecs = 3;
         public static readonly uint TotalHeartbeatsBeforeTimeout = 3;
         public static readonly float HeartbeatSendingIntervalSecs = 3;
 
-		public static readonly int RequiredNumberOfPlayers = 1;
+	public static readonly int RequiredNumberOfPlayers = 1;
 
         public static readonly int TargetClientFramerate = 60;
         public static readonly int TargetServerFramerate = 60;
@@ -35,13 +36,15 @@ namespace Assets.Gamelogic.Core
         public static readonly float FirstPersonCameraMaxPitch = 70f;
         public static readonly float FirstPersonCameraMinPitch = -80f;
 
-        public static readonly float PlayerMovementSpeed = 4f;
+        public static readonly float PlayerMovementSpeed = 8f;
         public static readonly float PlayerPositionUpdateMinSqrDistance = 0.001f;
         public static readonly float ReasonableMaxTransformUpdateSeparation = 0.5f;
         public static readonly float PlayerPositionUpdateMaxSqrDistance = PlayerMovementSpeed * PlayerMovementSpeed;
         public static readonly float AngleQuantisationFactor = 2f;
 
         public static readonly float OtherPlayerUpdateDelay = 0.5f;
+
+        public static readonly float ClientConnectionTimeoutSecs = 7;
 
         // Third Person Controls
         public static int ThirdPersonRotateCameraMouseButton = 1;
@@ -53,5 +56,6 @@ namespace Assets.Gamelogic.Core
         public static float ThirdPersonCameraMaxPitch = 70;
         public static float ThirdPersonCameraMinPitch = 20;
         public static float ThirdPersonCameraDefaultPitch = 25;
+
     }
 }

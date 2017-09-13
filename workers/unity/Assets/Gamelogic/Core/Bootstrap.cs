@@ -7,6 +7,8 @@ using Improbable.Unity.Core;
 using Improbable.Unity.Core.EntityQueries;
 using UnityEngine;
 
+using UnityEngine.SceneManagement;
+
 // Placed on a GameObject in a Unity scene to execute SpatialOS connection logic on startup.
 namespace Assets.Gamelogic.Core
 {
@@ -15,29 +17,49 @@ namespace Assets.Gamelogic.Core
         public WorkerConfigurationData Configuration = new WorkerConfigurationData();
 
         // Called when the Play button is pressed in Unity.
-        public void Start()
-        {
-            SpatialOS.ApplyConfiguration(Configuration);
+//        public void Start()
+//        {
+//            SpatialOS.ApplyConfiguration(Configuration);
+//
+//            Time.fixedDeltaTime = 1.0f / SimulationSettings.FixedFramerate;
+//
+//            // Distinguishes between when the Unity is running as a client or a server.
+//            switch (SpatialOS.Configuration.WorkerPlatform)
+//            {
+//                case WorkerPlatform.UnityWorker:
+//                    Application.targetFrameRate = SimulationSettings.TargetServerFramerate;
+//                    SpatialOS.OnDisconnected += reason => Application.Quit();
+//                    break;
+//                case WorkerPlatform.UnityClient:
+//                    Application.targetFrameRate = SimulationSettings.TargetClientFramerate;
+//                    SpatialOS.OnConnected += CreatePlayer;
+//                    break;
+//            }
+//
+//            // Enable communication with the SpatialOS layer of the simulation.
+////            SpatialOS.Connect(gameObject);
+//        }
 
-            Time.fixedDeltaTime = 1.0f / SimulationSettings.FixedFramerate;
-
-            // Distinguishes between when the Unity is running as a client or a server.
-            switch (SpatialOS.Configuration.WorkerPlatform)
-            {
-                case WorkerPlatform.UnityWorker:
-                    Application.targetFrameRate = SimulationSettings.TargetServerFramerate;
-                    SpatialOS.OnDisconnected += reason => Application.Quit();
-                    break;
-                case WorkerPlatform.UnityClient:
-                    Application.targetFrameRate = SimulationSettings.TargetClientFramerate;
-                    SpatialOS.OnConnected += CreatePlayer;
-                    break;
-            }
-
-            // Enable communication with the SpatialOS layer of the simulation.
-            SpatialOS.Connect(gameObject);
-        }
-
+		public void Start()
+		{
+			SpatialOS.ApplyConfiguration(Configuration);
+			//
+			Time.fixedDeltaTime = 1.0f / SimulationSettings.FixedFramerate;
+			switch (SpatialOS.Configuration.WorkerPlatform)
+			{
+			case WorkerPlatform.UnityWorker:
+				Application.targetFrameRate = SimulationSettings.TargetServerFramerate;
+				SpatialOS.OnDisconnected += reason => Application.Quit();
+				SpatialOS.Connect(gameObject);
+				break;
+			case WorkerPlatform.UnityClient:
+				Application.targetFrameRate = SimulationSettings.TargetClientFramerate;
+				SpatialOS.OnConnected += CreatePlayer;
+				SceneManager.LoadSceneAsync(BuildSettings.SplashScreenScene, LoadSceneMode.Additive);
+				break;
+			}
+		}
+//
         // Search for the PlayerCreator entity in the world in order to send a CreatePlayer command.
         public static void CreatePlayer()
         {
@@ -79,5 +101,10 @@ namespace Assets.Gamelogic.Core
             Debug.LogWarning("CreatePlayer command failed - you probably tried to connect too soon. Try again in a few seconds.");
             TimerUtils.WaitAndPerform(SimulationSettings.PlayerEntityCreationRetrySecs, () => RequestPlayerCreation(playerCreatorEntityId));
         }
+
+		public void ConnectToClient()
+		{
+			SpatialOS.Connect(gameObject);
+		}
     }
 }

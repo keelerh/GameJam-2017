@@ -1,0 +1,13 @@
+package improbable.player;
+	
+type OperateAction {}
+type Stab {}
+
+component PlayerActions {
+    // Component ID, unique within the project
+    id = 1007;
+    map<EntityId, bool> touch_map = 3;
+
+    event Stab stab;
+    event OperateAction operate_action;
+}

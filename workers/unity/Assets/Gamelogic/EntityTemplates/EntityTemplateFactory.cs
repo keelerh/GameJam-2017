@@ -35,23 +35,14 @@ namespace Assets.Gamelogic.EntityTemplates
                 .AddComponent(new ClientConnection.Data(SimulationSettings.TotalHeartbeatsBeforeTimeout), CommonRequirementSets.PhysicsOnly)
                 .AddComponent(new PlayerRotation.Data(yaw: 0), CommonRequirementSets.SpecificClientOnly(clientId))
                 .AddComponent(new PlayerMovement.Data(), CommonRequirementSets.SpecificClientOnly(clientId))
-				.AddComponent(new Instructions.Data(true, ""), CommonRequirementSets.PhysicsOnly)
+		.AddComponent(new Instructions.Data(true, ""), CommonRequirementSets.PhysicsOnly)
+                .AddComponent(new PlayerMovement.Data(), CommonRequirementSets.SpecificClientOnly(clientId))
+                .AddComponent(new Health.Data(1000), CommonRequirementSets.PhysicsOnly)
+		.AddComponent(new PlayerActions.Data(new Improbable.Collections.Map<EntityId,bool>()), CommonRequirementSets.SpecificClientOnly(clientId))
                 .Build();
 
             return template;
         }
-			
-		public static Entity CreateInstructionSender()
-		{
-			var template = EntityBuilder.Begin ()
-				.AddPositionComponent (Vector3.zero, CommonRequirementSets.PhysicsOnly)
-				.AddMetadataComponent (SimulationSettings.InstructionSenderPrefabName)
-				.SetPersistence (true)
-				.SetReadAcl (CommonRequirementSets.PhysicsOrVisual)
-				.Build ();
-			
-			return template;
-		}
 
         public static Entity CreateCubeTemplate()
         {
@@ -64,5 +55,18 @@ namespace Assets.Gamelogic.EntityTemplates
 
             return template;
         }
+
+		public static Entity CreateLaboratoryTemplate()
+		{
+			var template = EntityBuilder.Begin()
+				.AddPositionComponent(Vector3.zero, CommonRequirementSets.PhysicsOnly)
+				.AddMetadataComponent(SimulationSettings.LaboratoryPrefabName)
+				.SetPersistence(true)
+				.SetReadAcl(CommonRequirementSets.PhysicsOrVisual)
+				.Build();
+
+			return template;
+		}
+			
     }
 }
