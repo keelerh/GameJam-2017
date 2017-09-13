@@ -7,10 +7,13 @@ namespace Assets.Gamelogic.Core
         public static readonly string PlayerPrefabName = "Player";
         public static readonly string PlayerCreatorPrefabName = "PlayerCreator";
         public static readonly string CubePrefabName = "Cube";
+		public static readonly string InstructionSenderPrefabName = "InstructionSender";
 
         public static readonly float HeartbeatCheckIntervalSecs = 3;
         public static readonly uint TotalHeartbeatsBeforeTimeout = 3;
         public static readonly float HeartbeatSendingIntervalSecs = 3;
+
+		public static readonly int RequiredNumberOfPlayers = 1;
 
         public static readonly int TargetClientFramerate = 60;
         public static readonly int TargetServerFramerate = 60;

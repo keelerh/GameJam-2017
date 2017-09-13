@@ -18,7 +18,7 @@ namespace Assets.Gamelogic.EntityTemplates
                 .AddMetadataComponent(SimulationSettings.PlayerCreatorPrefabName)
                 .SetPersistence(true)
                 .SetReadAcl(CommonRequirementSets.PhysicsOrVisual)
-                .AddComponent(new PlayerCreation.Data(), CommonRequirementSets.PhysicsOnly)
+                .AddComponent(new PlayerCreation.Data(0, new Improbable.EntityId()), CommonRequirementSets.PhysicsOnly)
                 .Build();
 
             return template;
@@ -35,10 +35,23 @@ namespace Assets.Gamelogic.EntityTemplates
                 .AddComponent(new ClientConnection.Data(SimulationSettings.TotalHeartbeatsBeforeTimeout), CommonRequirementSets.PhysicsOnly)
                 .AddComponent(new PlayerRotation.Data(yaw: 0), CommonRequirementSets.SpecificClientOnly(clientId))
                 .AddComponent(new PlayerMovement.Data(), CommonRequirementSets.SpecificClientOnly(clientId))
+				.AddComponent(new Instructions.Data(true, ""), CommonRequirementSets.PhysicsOnly)
                 .Build();
 
             return template;
         }
+			
+		public static Entity CreateInstructionSender()
+		{
+			var template = EntityBuilder.Begin ()
+				.AddPositionComponent (Vector3.zero, CommonRequirementSets.PhysicsOnly)
+				.AddMetadataComponent (SimulationSettings.InstructionSenderPrefabName)
+				.SetPersistence (true)
+				.SetReadAcl (CommonRequirementSets.PhysicsOrVisual)
+				.Build ();
+			
+			return template;
+		}
 
         public static Entity CreateCubeTemplate()
         {

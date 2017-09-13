@@ -1,0 +1,11 @@
+package improbable.player;
+
+type UpdateInstructionsRequest {}
+type UpdateInstructionsResponse {}
+
+component Instructions {
+    id = 1300;
+    bool instruction_completed = 1;
+    string instruction_description = 2;
+    command UpdateInstructionsResponse update_instructions(UpdateInstructionsRequest);
+}

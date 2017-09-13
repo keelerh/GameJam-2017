@@ -117,10 +117,10 @@ namespace Assets.Gamelogic.Player
 
         private void UpdateAnimation()
         {
-            Debug.LogWarning("UpdateAnimation");
+//            Debug.LogWarning("UpdateAnimation");
             if (ShouldUpdateAnimation(playerRigidbody.velocity.magnitude))
             {
-                Debug.LogWarning("ShouldUpdateAnimation");
+//                Debug.LogWarning("ShouldUpdateAnimation");
                 var playerMovement = transform.InverseTransformDirection(Vector3.ClampMagnitude(playerRigidbody.velocity, 1));
                 var playerTurn = Mathf.Atan2(playerMovement.x, playerMovement.z);
                 var playerMotion = playerMovement.magnitude;
