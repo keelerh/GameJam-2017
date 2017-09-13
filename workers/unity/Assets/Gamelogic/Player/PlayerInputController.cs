@@ -27,8 +27,9 @@ namespace Assets.Gamelogic.Player
         private AudioSource source;
 
 
-		public Canvas scoreCanvasUI;
+		private Canvas scoreCanvasUI;
 		private Text totalPointsGUI;
+//		private Text playerStatus;
 
 
 //		public GameObject text;
@@ -39,13 +40,17 @@ namespace Assets.Gamelogic.Player
 			SceneManager.UnloadSceneAsync(BuildSettings.SplashScreenScene);
 			source = GetComponent<AudioSource>();
 
+			GameObject tempObj = GameObject.Find("ScoreCanvas");
+			scoreCanvasUI = tempObj.GetComponent<Canvas>();
+
 			if (scoreCanvasUI != null) {
-				Debug.LogWarning("We got here");
+//				Debug.LogWarning("We got here");
 				totalPointsGUI = scoreCanvasUI.GetComponentInChildren<Text>();
 //				scoreCanvasUI.enabled = false;
 //				updateGUI(0);
 			}
-
+//			playerStatus = this.gameObject.GetComponentInChildren<Text>();
+//			playerStatus.text = "player_" + this.gameObject.EntityId().ToString();
 
         }
 

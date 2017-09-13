@@ -34,7 +34,7 @@ namespace Assets.Gamelogic.Core
         public static readonly float FirstPersonCameraMaxPitch = 70f;
         public static readonly float FirstPersonCameraMinPitch = -80f;
 
-        public static readonly float PlayerMovementSpeed = 4f;
+        public static readonly float PlayerMovementSpeed = 8f;
         public static readonly float PlayerPositionUpdateMinSqrDistance = 0.001f;
         public static readonly float ReasonableMaxTransformUpdateSeparation = 0.5f;
         public static readonly float PlayerPositionUpdateMaxSqrDistance = PlayerMovementSpeed * PlayerMovementSpeed;
