@@ -28,7 +28,6 @@ namespace Assets.Gamelogic.Core
 
 		private UpdateInstructionsResponse OnUpdateInstructions(UpdateInstructionsRequest request, ICommandCallerInfo callerinfo)
 		{
-			Debug.LogWarning ("heyyheheyehewy");
 			var update = new Instructions.Update();
 			update.SetInstructionDescription("You are the killer");
 			instructionsWriter.Send(update);

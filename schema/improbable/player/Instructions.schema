@@ -1,6 +1,8 @@
 package improbable.player;
 
-type UpdateInstructionsRequest {}
+type UpdateInstructionsRequest {
+    string instruction_description = 1;
+}
 type UpdateInstructionsResponse {}
 
 component Instructions {

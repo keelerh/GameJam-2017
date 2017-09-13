@@ -21,6 +21,10 @@ namespace Assets.Gamelogic.Core
         private void OnEnable()
         {
             PlayerCreationWriter.CommandReceiver.OnCreatePlayer.RegisterResponse(OnCreatePlayer);
+
+			var update = new PlayerCreation.Update ();
+			update.SetCanAddPlayers (true);
+			PlayerCreationWriter.Send (update);
         }
 
         private void OnDisable()
@@ -50,8 +54,9 @@ namespace Assets.Gamelogic.Core
         private void CreatePlayer(string clientWorkerId, EntityId entityId)
         {
             int numberOfPlayersConnected = PlayerCreationWriter.Data.numberOfPlayersConnected;
+			bool canAddPlayers = PlayerCreationWriter.Data.canAddPlayers;
 
-			if (numberOfPlayersConnected >= SimulationSettings.RequiredNumberOfPlayers) {
+			if (canAddPlayers == false) {
                 Debug.LogError("No more players can connect.");
             } else {
                 var playerEntityTemplate = EntityTemplateFactory.CreatePlayerTemplate(clientWorkerId);
@@ -77,15 +82,16 @@ namespace Assets.Gamelogic.Core
 			if (numberOfPlayersConnected == SimulationSettings.RequiredNumberOfPlayers) {
 				int curId = (int)entityId.Id;
 				int randId = UnityEngine.Random.Range (curId - numberOfPlayersConnected + 1, curId + 1);
-				EntityId randEntityId = new EntityId (randId);
-				update.SetKillerId (randEntityId);
-				Debug.Log ("Going to send the command");
+				EntityId killerEntityId = new EntityId (randId);
+
+				update.SetKillerId (killerEntityId);
+				update.SetCanAddPlayers (false);
 				PlayerCreationWriter.Send (update);
-				SpatialOS.Commands.SendCommand (PlayerCreationWriter, Instructions.Commands.UpdateInstructions.Descriptor, new UpdateInstructionsRequest (), randEntityId)
-					.OnSuccess (response => Debug.Log ("Command successful"))
+
+				SpatialOS.Commands.SendCommand (PlayerCreationWriter, Instructions.Commands.UpdateInstructions.Descriptor, new UpdateInstructionsRequest (), killerEntityId)
 					.OnFailure (response => {
-						Debug.Log ("failed with error message " + response.ErrorMessage);
-						SpatialOS.Commands.SendCommand (PlayerCreationWriter, Instructions.Commands.UpdateInstructions.Descriptor, new UpdateInstructionsRequest (), randEntityId);
+						Debug.Log ("UpdateInstructions failed with error message " + response.ErrorMessage);
+						SpatialOS.Commands.SendCommand (PlayerCreationWriter, Instructions.Commands.UpdateInstructions.Descriptor, new UpdateInstructionsRequest (), killerEntityId);
 					});
 			} else {
 				PlayerCreationWriter.Send (update);

@@ -1,9 +1,13 @@
-﻿using Assets.Gamelogic.Core;
+﻿using Assets.Gamelogic.EntityTemplates;
+using Assets.Gamelogic.Core;
 using Assets.Gamelogic.Utils;
+using Improbable;
 using Improbable.Entity.Component;
+using Improbable.Core;
 using Improbable.Player;
 using Improbable.Unity;
 using Improbable.Unity.Core;
+using Improbable.Unity.Core.EntityQueries;
 using Improbable.Unity.Visualizer;
 using UnityEngine;
 
@@ -12,8 +16,7 @@ namespace Assets.Gamelogic.Player
     [WorkerType(WorkerPlatform.UnityWorker)]
     public class HandleClientConnection : MonoBehaviour
     {
-        [Require]
-        private ClientConnection.Writer ClientConnectionWriter;
+        [Require] private ClientConnection.Writer ClientConnectionWriter;
 
         private Coroutine heartbeatCoroutine;
 
@@ -34,8 +37,16 @@ namespace Assets.Gamelogic.Player
         private void OnDisconnectClient(ResponseHandle<ClientConnection.Commands.DisconnectClient,
                                         ClientDisconnectRequest,
                                         ClientDisconnectResponse> handle)
-        {
-            DeletePlayerEntity();
+		{
+			var playerCreatorQuery = Query.HasComponent<PlayerCreation>().ReturnOnlyEntityIds();
+			SpatialOS.WorkerCommands.SendQuery(playerCreatorQuery)
+				.OnSuccess(result => {
+					var playerCreatorEntityId = result.Entities.First.Value.Key;
+					SpatialOS.WorkerCommands.SendCommand(PlayerCreation.Commands.HandlePlayerDisconnect.Descriptor, new HandlePlayerDisconnectRequest(), playerCreatorEntityId)
+						.OnFailure(response => OnDisconnectClient(handle));
+					DeletePlayerEntity();
+				})
+				.OnFailure(response => OnDisconnectClient(handle));
         }
 
         private HeartbeatResponse OnHeartbeat(HeartbeatRequest request, ICommandCallerInfo callerinfo)
