@@ -14,6 +14,7 @@ namespace Assets.Gamelogic.Player
         [Require] private Position.Writer PositionWriter;
         [Require] private PlayerMovement.Writer PlayerMovementWriter;
         [Require] private PlayerRotation.Writer PlayerRotationWriter;
+		[Require] private Health.Reader HealthReader;
 
         public Vector3 CurrentCanonicalPosition { get { return new Vector3((float)PositionWriter.Data.coords.x, 0, (float)PositionWriter.Data.coords.z); } }
         private Transform playerCamera;
@@ -21,6 +22,7 @@ namespace Assets.Gamelogic.Player
         private float pitch;
         private Vector3 targetVelocity;
         private bool playerIsGrounded;
+		private TextMesh textMesh;
 
         [SerializeField] private Collider playerCollider;
         [SerializeField] private Rigidbody playerRigidbody;
@@ -43,15 +45,25 @@ namespace Assets.Gamelogic.Player
         }
 
         private void Update()
-        {
+        {	
+			if (HealthReader.Data.currentHealth <= 0) {
+				return;
+			}
             UpdateDesiredMovementDirection();
             SetCameraTransform();
         }
 
         private void FixedUpdate()
-        {
+        {	
+			if (HealthReader.Data.currentHealth <= 0) {
+				return;
+			}
             UpdatePlayerControls();
             MovePlayer();
+
+//			textMesh = GetComponent<TextMesh>();
+//			textMesh = textMesh.transform.LookAt(Camera.main.transform);
+//			textMesh.text = "meow meow meow";
         }
 
         private void UpdateDesiredMovementDirection()

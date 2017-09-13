@@ -8,6 +8,8 @@ using Improbable.Unity.Core.EntityQueries;
 using Improbable;
 using Improbable.Unity.Core;
 using System.Collections;
+using UnityEngine.UI;
+
 
 namespace Assets.Gamelogic.Player
 {
@@ -17,11 +19,19 @@ namespace Assets.Gamelogic.Player
     {        
 
         [Require] private PlayerActions.Writer PlayerActionsWriter;
+		[Require] private Health.Reader HealthReader;
+
         private ActionFirer actionFirer;
 		public AudioClip stabSound;
 		public AudioClip operateSound;
         private AudioSource source;
-		private TextMesh textMesh;
+
+
+		public Canvas scoreCanvasUI;
+		private Text totalPointsGUI;
+
+
+//		public GameObject text;
 
         void OnEnable()
         {
@@ -29,18 +39,29 @@ namespace Assets.Gamelogic.Player
 			SceneManager.UnloadSceneAsync(BuildSettings.SplashScreenScene);
 			source = GetComponent<AudioSource>();
 
-			textMesh = GetComponent<TextMesh>();//
-			textMesh.text = "meow meow meow";
+			if (scoreCanvasUI != null) {
+				Debug.LogWarning("We got here");
+				totalPointsGUI = scoreCanvasUI.GetComponentInChildren<Text>();
+//				scoreCanvasUI.enabled = false;
+//				updateGUI(0);
+			}
+
+
         }
 
         void Update()
-        {
+        {	
+
+			if (HealthReader.Data.currentHealth <= 0) {
+				return;
+			}
+
             if (Input.GetKeyDown(KeyCode.E))
             {   
 //                Debug.LogWarning("Completed task!");
-
                 PlayerActionsWriter.Send(new PlayerActions.Update().AddOperateAction(new OperateAction()));
 				source.PlayOneShot(operateSound,1f);
+				totalPointsGUI.text = "you are the murderer";
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
