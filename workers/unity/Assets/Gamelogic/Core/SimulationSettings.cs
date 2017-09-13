@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Gamelogic.Core
 {
@@ -7,6 +8,7 @@ namespace Assets.Gamelogic.Core
         public static readonly string PlayerPrefabName = "Player";
         public static readonly string PlayerCreatorPrefabName = "PlayerCreator";
         public static readonly string CubePrefabName = "Cube";
+		public static readonly string LaboratoryPrefabName = "Laboratory";
 
         public static readonly float HeartbeatCheckIntervalSecs = 3;
         public static readonly uint TotalHeartbeatsBeforeTimeout = 3;
@@ -50,5 +52,6 @@ namespace Assets.Gamelogic.Core
         public static float ThirdPersonCameraMaxPitch = 70;
         public static float ThirdPersonCameraMinPitch = 20;
         public static float ThirdPersonCameraDefaultPitch = 25;
+
     }
 }

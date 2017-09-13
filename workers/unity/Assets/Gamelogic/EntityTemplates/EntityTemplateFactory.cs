@@ -51,5 +51,18 @@ namespace Assets.Gamelogic.EntityTemplates
 
             return template;
         }
+
+		public static Entity CreateLaboratoryTemplate()
+		{
+			var template = EntityBuilder.Begin()
+				.AddPositionComponent(Vector3.zero, CommonRequirementSets.PhysicsOnly)
+				.AddMetadataComponent(SimulationSettings.LaboratoryPrefabName)
+				.SetPersistence(true)
+				.SetReadAcl(CommonRequirementSets.PhysicsOrVisual)
+				.Build();
+
+			return template;
+		}
+			
     }
 }
