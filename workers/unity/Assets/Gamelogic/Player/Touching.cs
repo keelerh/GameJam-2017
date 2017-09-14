@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
  
 namespace Assets.Gamelogic.Player
 {
+	[WorkerType(WorkerPlatform.UnityClient)]
     public class Touching : MonoBehaviour
     {
         [Require] private PlayerActions.Writer PlayerActionsWriter;
@@ -15,6 +16,13 @@ namespace Assets.Gamelogic.Player
 		private void OnCollisionEnter(Collision other)
         {
 //            Debug.LogWarning("Touching!");
+
+			if (other != null && other.gameObject.tag == "Banana")
+			{   
+				Destroy(other.gameObject);
+				int newBananas = PlayerActionsWriter.Data.bananas + 1;
+				PlayerActionsWriter.Send(new PlayerActions.Update().SetBananas(newBananas));
+			}
 
             if (other != null && other.gameObject.tag == "Player")
             {   

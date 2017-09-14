@@ -34,8 +34,8 @@ namespace Assets.Editor
 			for (var i = 0; i < 50; i++)
 			{
 				// Choose a starting position for this banana entity
-				var x = Random.Range(-20,20);
-				var z = Random.Range(-20,20);
+				var x = Random.Range(-35,35);
+				var z = Random.Range(-35,35);
 				var bananaCoordinates = new Vector3(x,0,z);
 
 

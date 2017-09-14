@@ -35,10 +35,10 @@ namespace Assets.Gamelogic.EntityTemplates
                 .AddComponent(new ClientConnection.Data(SimulationSettings.TotalHeartbeatsBeforeTimeout), CommonRequirementSets.PhysicsOnly)
                 .AddComponent(new PlayerRotation.Data(yaw: 0), CommonRequirementSets.SpecificClientOnly(clientId))
                 .AddComponent(new PlayerMovement.Data(), CommonRequirementSets.SpecificClientOnly(clientId))
-		.AddComponent(new Instructions.Data(true, ""), CommonRequirementSets.PhysicsOnly)
+				.AddComponent(new Instructions.Data(true, ""), CommonRequirementSets.PhysicsOnly)
                 .AddComponent(new PlayerMovement.Data(), CommonRequirementSets.SpecificClientOnly(clientId))
                 .AddComponent(new Health.Data(1000), CommonRequirementSets.PhysicsOnly)
-		.AddComponent(new PlayerActions.Data(new Improbable.Collections.Map<EntityId,bool>()), CommonRequirementSets.SpecificClientOnly(clientId))
+				.AddComponent(new PlayerActions.Data(new Improbable.Collections.Map<EntityId,bool>(), 10), CommonRequirementSets.SpecificClientOnly(clientId))
                 .Build();
 
             return template;
