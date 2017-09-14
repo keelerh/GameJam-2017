@@ -6,6 +6,7 @@ Temp/
 Library/
 obj/
 *.svd
+*.DS_Store
 
 !Library/*.asset
 !Library/AssetImportState
@@ -17,8 +18,6 @@ obj/
 !Library/guidmapper
 !Library/unity default resources
 !Library/unity editor resources
-
-
 
 /Project/Project.userprefs
 /Project/Assembly-CSharp.csproj
@@ -38,6 +37,5 @@ obj/
 logs/
 build/
 snapshots/
-
 *.asset
->>>>>>> origin/monkey-actions
+*.snapshot
