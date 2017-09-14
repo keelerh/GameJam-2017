@@ -5,6 +5,7 @@ using Improbable.Unity;
 using Improbable.Unity.Configuration;
 using Improbable.Unity.Core;
 using Improbable.Unity.Core.EntityQueries;
+using Improbable.Worker;
 using UnityEngine;
 
 using UnityEngine.SceneManagement;
@@ -55,9 +56,28 @@ namespace Assets.Gamelogic.Core
 			case WorkerPlatform.UnityClient:
 				Application.targetFrameRate = SimulationSettings.TargetClientFramerate;
 				SpatialOS.OnConnected += CreatePlayer;
+				SpatialOS.OnDisconnected += reason => HandlePlayerDisconnect();
 				SceneManager.LoadSceneAsync(BuildSettings.SplashScreenScene, LoadSceneMode.Additive);
 				break;
 			}
+		}
+
+		public static void HandlePlayerDisconnect()
+		{
+			var playerCreatorQuery = Query.HasComponent<PlayerCreation>().ReturnOnlyEntityIds();
+			SpatialOS.WorkerCommands.SendQuery(playerCreatorQuery)
+				.OnSuccess(result => {
+					if (result.EntityCount < 1)
+					{
+						Debug.LogError("Failed to find PlayerCreator. SpatialOS probably hadn't finished loading the initial snapshot. Try again in a few seconds.");
+						return;
+					}
+					var playerCreatorEntityId = result.Entities.First.Value.Key;
+					SpatialOS.WorkerCommands.SendCommand(PlayerCreation.Commands.HandlePlayerDisconnect.Descriptor, new HandlePlayerDisconnectRequest(), playerCreatorEntityId)
+						.OnFailure(response => HandlePlayerDisconnect());
+					
+				})
+				.OnFailure(OnFailedPlayerCreatorQuery);
 		}
 //
         // Search for the PlayerCreator entity in the world in order to send a CreatePlayer command.

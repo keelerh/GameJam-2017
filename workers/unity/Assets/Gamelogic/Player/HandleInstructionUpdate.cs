@@ -11,7 +11,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-namespace Assets.Gamelogic.Core
+namespace Assets.Gamelogic.Player
 {
 	[WorkerType(WorkerPlatform.UnityWorker)]
 	public class HandleInstructionUpdate : MonoBehaviour {
@@ -28,9 +28,11 @@ namespace Assets.Gamelogic.Core
 
 		private UpdateInstructionsResponse OnUpdateInstructions(UpdateInstructionsRequest request, ICommandCallerInfo callerinfo)
 		{
-			Debug.LogWarning ("heyyheheyehewy");
+			Debug.Log ("Going to handle the update instructions request");
+			Debug.Log (request.instructionDescription);
+
 			var update = new Instructions.Update();
-			update.SetInstructionDescription("You are the killer");
+			update.SetInstructionDescription(request.instructionDescription);
 			instructionsWriter.Send(update);
 
 			return new UpdateInstructionsResponse();

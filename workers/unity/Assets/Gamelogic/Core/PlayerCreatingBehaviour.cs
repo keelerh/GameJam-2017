@@ -3,6 +3,7 @@ using Assets.Gamelogic.Core;
 using Improbable;
 using Improbable.Entity.Component;
 using Improbable.Core;
+using Improbable.Unity.Core.EntityQueries;
 using Improbable.Player;
 using Improbable.Unity;
 using Improbable.Unity.Core;
@@ -21,8 +22,12 @@ namespace Assets.Gamelogic.Core
         private void OnEnable()
         {
             PlayerCreationWriter.CommandReceiver.OnCreatePlayer.RegisterResponse(OnCreatePlayer);
-        }
 
+			var update = new PlayerCreation.Update ();
+			update.SetCanAddPlayers (true);
+			PlayerCreationWriter.Send (update);
+        }
+			
         private void OnDisable()
         {
             PlayerCreationWriter.CommandReceiver.OnCreatePlayer.DeregisterResponse();
@@ -50,8 +55,9 @@ namespace Assets.Gamelogic.Core
         private void CreatePlayer(string clientWorkerId, EntityId entityId)
         {
             int numberOfPlayersConnected = PlayerCreationWriter.Data.numberOfPlayersConnected;
+			bool canAddPlayers = PlayerCreationWriter.Data.canAddPlayers;
 
-			if (numberOfPlayersConnected >= SimulationSettings.RequiredNumberOfPlayers) {
+			if (canAddPlayers == false) {
                 Debug.LogError("No more players can connect.");
             } else {
                 var playerEntityTemplate = EntityTemplateFactory.CreatePlayerTemplate(clientWorkerId);
@@ -74,22 +80,51 @@ namespace Assets.Gamelogic.Core
 
 			var update = new PlayerCreation.Update();
 			update.SetNumberOfPlayersConnected(numberOfPlayersConnected);
+			update.SetNumberOfPlayersAlive (numberOfPlayersConnected);
+
 			if (numberOfPlayersConnected == SimulationSettings.RequiredNumberOfPlayers) {
-				int curId = (int)entityId.Id;
-				int randId = UnityEngine.Random.Range (curId - numberOfPlayersConnected + 1, curId + 1);
-				EntityId randEntityId = new EntityId (randId);
-				update.SetKillerId (randEntityId);
-				Debug.Log ("Going to send the command");
-				PlayerCreationWriter.Send (update);
-				SpatialOS.Commands.SendCommand (PlayerCreationWriter, Instructions.Commands.UpdateInstructions.Descriptor, new UpdateInstructionsRequest (), randEntityId)
-					.OnSuccess (response => Debug.Log ("Command successful"))
+				var playerQuery = Query.HasComponent<Health>().ReturnOnlyEntityIds();
+				SpatialOS.WorkerCommands.SendQuery (playerQuery)
+					.OnSuccess (result => {
+						var playerEntityIds = result.Entities.Keys.GetEnumerator();
+						int randIndex = UnityEngine.Random.Range (0, numberOfPlayersConnected);
+						EntityId killerId = new EntityId(0);
+
+						int i=0;
+						while(i<numberOfPlayersConnected) {
+							EntityId curId = playerEntityIds.Current;
+							if(curId.Id != 0) {
+								if(i == randIndex) {
+									killerId = curId;
+									SendInitialInstructions("You are the rogue monkey", curId);
+								} else {
+									SendInitialInstructions("You are innocent", curId);
+								}
+								i++;
+							}
+							playerEntityIds.MoveNext();
+						}
+							
+						update.SetKillerId (killerId);
+						update.SetCanAddPlayers (false);
+						PlayerCreationWriter.Send (update);
+					})
 					.OnFailure (response => {
-						Debug.Log ("failed with error message " + response.ErrorMessage);
-						SpatialOS.Commands.SendCommand (PlayerCreationWriter, Instructions.Commands.UpdateInstructions.Descriptor, new UpdateInstructionsRequest (), randEntityId);
-					});
+						Debug.Log ("All players query failed.  Trying again...");
+						SpatialOS.WorkerCommands.SendQuery (playerQuery);
+				});
 			} else {
 				PlayerCreationWriter.Send (update);
 			}
 	    }
+
+		private void SendInitialInstructions(string message, EntityId target)
+		{
+			SpatialOS.Commands.SendCommand (PlayerCreationWriter, Instructions.Commands.UpdateInstructions.Descriptor, new UpdateInstructionsRequest (message), target)
+				.OnFailure (response => {
+				Debug.Log ("UpdateInstructions failed with error message " + response.ErrorMessage);
+				SendInitialInstructions (message, target);
+			});
+		}
 	}
 }
