@@ -18,6 +18,14 @@ namespace Assets.Gamelogic.Player
     {
         [Require] private PlayerActions.Writer PlayerActionsWriter;
 
+		public AudioClip chompSound;
+		private AudioSource source;
+
+		private void OnEnable()
+		{
+		source = GetComponent<AudioSource>();
+		}
+
 		private void OnCollisionEnter(Collision other)
         {
 
@@ -29,6 +37,7 @@ namespace Assets.Gamelogic.Player
 
 				int newBananas = PlayerActionsWriter.Data.bananas + 1;
 				PlayerActionsWriter.Send(new PlayerActions.Update().SetBananas(newBananas));
+				source.PlayOneShot(chompSound,1f);
 			}
 
             if (other != null && other.gameObject.tag == "Player")
