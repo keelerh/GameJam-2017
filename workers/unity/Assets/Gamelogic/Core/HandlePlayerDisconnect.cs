@@ -26,7 +26,7 @@ namespace Assets.Gamelogic.Core
 
 		private HandlePlayerDisconnectResponse OnHandlePlayerDisconnect(HandlePlayerDisconnectRequest request,  ICommandCallerInfo callerinfo) {
 			int numberOfPlayersConnected = playerCreationWriter.Data.numberOfPlayersConnected - 1;
-
+			Debug.Log ("HANDLING A PLAYER DISCONNECT");
 			var update = new PlayerCreation.Update ();
 			update.SetNumberOfPlayersConnected (numberOfPlayersConnected);
 			if (numberOfPlayersConnected == 0) {
