@@ -20,10 +20,29 @@ namespace Assets.Editor
 			var currentEntityId = 1;
 
 			snapshotEntities.Add(new EntityId(currentEntityId++), EntityTemplateFactory.CreatePlayerCreatorTemplate());
+			snapshotEntities.Add(new EntityId(currentEntityId++), EntityTemplateFactory.CreateBananaCreatorTemplate());
 			snapshotEntities.Add(new EntityId(currentEntityId++), EntityTemplateFactory.CreateCubeTemplate());
 			snapshotEntities.Add(new EntityId(currentEntityId++), EntityTemplateFactory.CreateLaboratoryTemplate());
+//			snapshotEntities.Add(new EntityId(currentEntityId++), EntityTemplateFactory.CreateBananaTemplate());
+			PopulateSnapshotWithBananaEntities(ref snapshotEntities, ref currentEntityId);
 
 			SaveSnapshot(snapshotEntities);
+		}
+
+		public static void PopulateSnapshotWithBananaEntities(ref Dictionary<EntityId, Entity> snapshotEntities, ref int nextAvailableId)
+		{	
+
+			for (var i = 0; i < 80; i++)
+			{
+				// Choose a starting position for this banana entity
+				var x = Random.Range(-35,35);
+				var z = Random.Range(-35,35);
+				var bananaCoordinates = new Vector3(x,0.3f,z);
+
+
+				snapshotEntities.Add(new EntityId(nextAvailableId++),
+					EntityTemplateFactory.CreateBananaTemplate(bananaCoordinates));
+			}
 		}
 
 		private static void SaveSnapshot(IDictionary<EntityId, Entity> snapshotEntities)

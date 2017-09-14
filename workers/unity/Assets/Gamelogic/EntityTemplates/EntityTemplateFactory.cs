@@ -24,6 +24,19 @@ namespace Assets.Gamelogic.EntityTemplates
             return template;
         }
 
+		public static Entity CreateBananaCreatorTemplate()
+		{
+			var template = EntityBuilder.Begin()
+				.AddPositionComponent(Vector3.zero, CommonRequirementSets.PhysicsOnly)
+				.AddMetadataComponent(SimulationSettings.BananaCreatorPrefabName)
+				.SetPersistence(true)
+				.SetReadAcl(CommonRequirementSets.PhysicsOrVisual)
+				.AddComponent(new PlayerCreation.Data(0, new Improbable.EntityId()), CommonRequirementSets.PhysicsOnly)
+				.Build();
+
+			return template;
+		}
+
         public static Entity CreatePlayerTemplate(string clientId)
         {
             var template = EntityBuilder.Begin()
@@ -35,10 +48,10 @@ namespace Assets.Gamelogic.EntityTemplates
                 .AddComponent(new ClientConnection.Data(SimulationSettings.TotalHeartbeatsBeforeTimeout), CommonRequirementSets.PhysicsOnly)
                 .AddComponent(new PlayerRotation.Data(yaw: 0), CommonRequirementSets.SpecificClientOnly(clientId))
                 .AddComponent(new PlayerMovement.Data(), CommonRequirementSets.SpecificClientOnly(clientId))
-				.AddComponent(new Instructions.Data(true, "Waiting for other players"), CommonRequirementSets.PhysicsOnly)
+		.AddComponent(new Instructions.Data(true, "Waiting for other players"), CommonRequirementSets.PhysicsOnly)
                 .AddComponent(new PlayerMovement.Data(), CommonRequirementSets.SpecificClientOnly(clientId))
                 .AddComponent(new Health.Data(1000), CommonRequirementSets.PhysicsOnly)
-				.AddComponent(new PlayerActions.Data(new Improbable.Collections.Map<EntityId,bool>()), CommonRequirementSets.SpecificClientOnly(clientId))
+		.AddComponent(new PlayerActions.Data(new Improbable.Collections.Map<EntityId,bool>(), 10), CommonRequirementSets.SpecificClientOnly(clientId))
                 .Build();
 
             return template;
@@ -61,6 +74,18 @@ namespace Assets.Gamelogic.EntityTemplates
 			var template = EntityBuilder.Begin()
 				.AddPositionComponent(Vector3.zero, CommonRequirementSets.PhysicsOnly)
 				.AddMetadataComponent(SimulationSettings.LaboratoryPrefabName)
+				.SetPersistence(true)
+				.SetReadAcl(CommonRequirementSets.PhysicsOrVisual)
+				.Build();
+
+			return template;
+		}
+
+		public static Entity CreateBananaTemplate(Vector3 initialPosition)
+		{
+			var template = EntityBuilder.Begin()
+				.AddPositionComponent(initialPosition, CommonRequirementSets.PhysicsOnly)
+				.AddMetadataComponent(SimulationSettings.BananaPrefabName)
 				.SetPersistence(true)
 				.SetReadAcl(CommonRequirementSets.PhysicsOrVisual)
 				.Build();

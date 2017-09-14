@@ -26,10 +26,10 @@
       "worker_type": "UnityClient",
       "permissions": [{
         "entity_creation": {
-          "allow": false
+          "allow": true
         },
         "entity_deletion": {
-          "allow": false
+          "allow": true
         },
         "entity_query": {
           "allow": true,

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using System;
+using UnityEngine.UI;
 
 namespace Assets.Gamelogic.Player
 {   
@@ -30,6 +31,9 @@ namespace Assets.Gamelogic.Player
 
         private bool alreadyDead = false;
 
+		public GameObject nameCanvas;
+		private Text playerStatus;
+
         private void OnEnable()
         {
             transform.position = PositionReader.Data.coords.ToUnityVector();
@@ -40,6 +44,10 @@ namespace Assets.Gamelogic.Player
             DisableAuthoritativeRigidbodyBehaviour();
 
             alreadyDead = false;
+
+			Debug.LogWarning ("player_" + this.gameObject.EntityId().ToString());
+			playerStatus = nameCanvas.GetComponentInChildren<Text>();
+			playerStatus.text = "player_" + this.gameObject.EntityId().ToString();
         }
 
         private void OnDisable()
@@ -122,7 +130,7 @@ namespace Assets.Gamelogic.Player
 
         private void UpdateAnimation()
         {
-            Debug.LogWarning("UpdateAnimation");
+//            Debug.LogWarning("UpdateAnimation");
 
             if (!alreadyDead && HealthReader.Data.currentHealth <= 0)
             {
@@ -137,7 +145,7 @@ namespace Assets.Gamelogic.Player
 
             if (ShouldUpdateAnimation(playerRigidbody.velocity.magnitude))
             {
-                Debug.LogWarning("ShouldUpdateAnimation");
+//                Debug.LogWarning("ShouldUpdateAnimation");
                 var playerMovement = transform.InverseTransformDirection(Vector3.ClampMagnitude(playerRigidbody.velocity, 1));
                 var playerTurn = Mathf.Atan2(playerMovement.x, playerMovement.z);
                 var playerMotion = playerMovement.magnitude;
