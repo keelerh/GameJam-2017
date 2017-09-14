@@ -19,13 +19,13 @@ namespace Assets.Gamelogic.Player
 
         private void Start()
         {
-            // actionFirer = gameObject.GetComponent<ActionFirer>();
         }
         	
         private void OnEnable()
         {
             PlayerActionsReader.StabTriggered.Add(OnStab);
             PlayerActionsReader.OperateActionTriggered.Add(OnOperateAction);
+			PlayerActionsReader.SuicideTriggered.Add(OnSuicide);
 			HealthWriter.CommandReceiver.OnTakeDamage.RegisterResponse(TakeDamage);
         }
 
@@ -33,29 +33,26 @@ namespace Assets.Gamelogic.Player
         {
             PlayerActionsReader.StabTriggered.Remove(OnStab);
             PlayerActionsReader.OperateActionTriggered.Remove(OnOperateAction);
+			PlayerActionsReader.SuicideTriggered.Remove(OnSuicide);
 			HealthWriter.CommandReceiver.OnTakeDamage.DeregisterResponse();
         }
 
         private void OnStab(Stab stab)
         {   
-//            Debug.LogWarning("Stab action fired!");
-//            int newHealth = HealthWriter.Data.currentHealth - 250;
-//            HealthWriter.Send(new Health.Update().SetCurrentHealth(newHealth));
 			var touchMap = PlayerActionsReader.Data.touchMap;
-
 			foreach(var item in touchMap)
 			{
 				if (item.Value) {
-					AttackPlayer (item.Key);
-//					newMap[other.gameObject.EntityId()] = false;
-//					PlayerActionsWriter.Send(new PlayerActions.Update().SetTouchMap(newMap));
+					AttackPlayer(item.Key);
 				}
-
 			}
-
-
-
         }
+
+		private void OnSuicide(Suicide suicide)
+		{   
+			int newHealth = HealthWriter.Data.currentHealth - 1000;
+			HealthWriter.Send(new Health.Update().SetCurrentHealth(newHealth));
+		}
 
         private void OnOperateAction(OperateAction operateAction)
         {   
@@ -64,10 +61,6 @@ namespace Assets.Gamelogic.Player
 
 		private DamageResponse TakeDamage(DamageRequest request, ICommandCallerInfo callerInfo)
 		{
-//			uint desiredDamage = request.amount;
-//			uint dealtDamage = System.Math.Min(desiredDamage, HealthWriter.Data.currentHealth);
-//
-//			HealthWriter.Send(new Health.Update().SetCurrentHealth(HealthWriter.Data.currentHealth - dealtDamage));
 
 			int newHealth = HealthWriter.Data.currentHealth - 1000;
 			HealthWriter.Send(new Health.Update().SetCurrentHealth(newHealth));
@@ -76,7 +69,7 @@ namespace Assets.Gamelogic.Player
 		}
 
 
-		void AttackPlayer(EntityId playerEntityId) 
+		public void AttackPlayer(EntityId playerEntityId) 
 		{
 			SpatialOS.Commands
 				.SendCommand(HealthWriter, Health.Commands.TakeDamage.Descriptor, new DamageRequest(1000), playerEntityId)
@@ -93,9 +86,5 @@ namespace Assets.Gamelogic.Player
 		{
 			Debug.LogError("Failed to send take damage command with error: " + response.ErrorMessage);
 		}
-
-        // public void AttemptToStab(Vector3 direction)
-        // {
-        // }
     }
 }

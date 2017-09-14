@@ -2,12 +2,10 @@ using Assets.Gamelogic.Player;
 using Assets.Gamelogic.Utils;
 using Improbable.Unity.Core;
 using UnityEngine.UI;
-using Assets.Gamelogic.Utils;
 using Improbable;
 using Improbable.Core;
 using Improbable.Unity;
 using Improbable.Unity.Configuration;
-using Improbable.Unity.Core;
 using Improbable.Unity.Core.EntityQueries;
 using UnityEngine;
 

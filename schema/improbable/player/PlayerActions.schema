@@ -2,6 +2,7 @@ package improbable.player;
 	
 type OperateAction {}
 type Stab {}
+type Suicide {}
 
 component PlayerActions {
     // Component ID, unique within the project
@@ -11,4 +12,5 @@ component PlayerActions {
 
     event Stab stab;
     event OperateAction operate_action;
+    event Suicide suicide;
 }

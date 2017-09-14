@@ -10,6 +10,7 @@ namespace Assets.Gamelogic.Core
         public static readonly string CubePrefabName = "Cube";
 		public static readonly string LaboratoryPrefabName = "Laboratory";
 		public static readonly string BananaPrefabName = "banana_prefab";
+		public static readonly string BananaCreatorPrefabName = "BananaCreator";
 
         public static readonly float HeartbeatCheckIntervalSecs = 3;
         public static readonly uint TotalHeartbeatsBeforeTimeout = 3;
