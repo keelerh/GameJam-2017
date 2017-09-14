@@ -32,7 +32,7 @@ namespace Assets.Editor
 		public static void PopulateSnapshotWithBananaEntities(ref Dictionary<EntityId, Entity> snapshotEntities, ref int nextAvailableId)
 		{	
 
-			for (var i = 0; i < 80; i++)
+			for (var i = 0; i < 20; i++)
 			{
 				// Choose a starting position for this banana entity
 				var x = Random.Range(-35,35);

@@ -15,13 +15,14 @@ using Improbable.Unity.Core;
 using System.Collections;
 using UnityEngine.UI;
 using Assets.Gamelogic.EntityTemplates;
+using Improbable.Core;
 
 namespace Assets.Gamelogic.Core
 {   
 	[WorkerType(WorkerPlatform.UnityWorker)]
 	public class BananaSpawner : MonoBehaviour
 	{	
-		[Require] private Health.Writer HealthWriter;
+		[Require] private PlayerCreation.Writer HealthWriter;
 
 		private void OnEnable()
 		{
@@ -39,7 +40,7 @@ namespace Assets.Gamelogic.Core
 			var x = Random.Range(-35,35);
 			var z = Random.Range(-35,35);
 			var bananaCoordinates = new Vector3(x,0.3f,z);
-
+//			Debug.LogError(HealthWriter.HasAuthority);
 			SpatialOS.Commands.CreateEntity(HealthWriter, EntityTemplateFactory.CreateBananaTemplate(bananaCoordinates))
 				.OnSuccess(entityId => Debug.Log("Created entity with ID: " + entityId))
 				.OnFailure(errorDetails => Debug.LogError("Failed to create entity with error: " + errorDetails.ErrorMessage));

@@ -19,7 +19,10 @@
          }
       },
       "permissions": [{
-        "all": {}
+        "all": {},
+        "entity_creation": {
+          "allow": true
+        }
       }]
     },
     {
