@@ -29,7 +29,7 @@
           "allow": false
         },
         "entity_deletion": {
-          "allow": false
+          "allow": true
         },
         "entity_query": {
           "allow": true,

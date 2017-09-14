@@ -31,12 +31,12 @@ namespace Assets.Editor
 		public static void PopulateSnapshotWithBananaEntities(ref Dictionary<EntityId, Entity> snapshotEntities, ref int nextAvailableId)
 		{	
 
-			for (var i = 0; i < 50; i++)
+			for (var i = 0; i < 80; i++)
 			{
 				// Choose a starting position for this banana entity
 				var x = Random.Range(-35,35);
 				var z = Random.Range(-35,35);
-				var bananaCoordinates = new Vector3(x,0,z);
+				var bananaCoordinates = new Vector3(x,0.3f,z);
 
 
 				snapshotEntities.Add(new EntityId(nextAvailableId++),
