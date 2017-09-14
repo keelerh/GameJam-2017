@@ -24,6 +24,19 @@ namespace Assets.Gamelogic.EntityTemplates
             return template;
         }
 
+		public static Entity CreateBananaCreatorTemplate()
+		{
+			var template = EntityBuilder.Begin()
+				.AddPositionComponent(Vector3.zero, CommonRequirementSets.PhysicsOnly)
+				.AddMetadataComponent(SimulationSettings.BananaCreatorPrefabName)
+				.SetPersistence(true)
+				.SetReadAcl(CommonRequirementSets.PhysicsOrVisual)
+				.AddComponent(new PlayerCreation.Data(0, new Improbable.EntityId()), CommonRequirementSets.PhysicsOnly)
+				.Build();
+
+			return template;
+		}
+
         public static Entity CreatePlayerTemplate(string clientId)
         {
             var template = EntityBuilder.Begin()
