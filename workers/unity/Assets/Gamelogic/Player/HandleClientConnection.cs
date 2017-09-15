@@ -38,15 +38,7 @@ namespace Assets.Gamelogic.Player
                                         ClientDisconnectRequest,
                                         ClientDisconnectResponse> handle)
 		{
-			var playerCreatorQuery = Query.HasComponent<PlayerCreation>().ReturnOnlyEntityIds();
-			SpatialOS.WorkerCommands.SendQuery(playerCreatorQuery)
-				.OnSuccess(result => {
-					var playerCreatorEntityId = result.Entities.First.Value.Key;
-					SpatialOS.WorkerCommands.SendCommand(PlayerCreation.Commands.HandlePlayerDisconnect.Descriptor, new HandlePlayerDisconnectRequest(), playerCreatorEntityId)
-						.OnFailure(response => OnDisconnectClient(handle));
-					DeletePlayerEntity();
-				})
-				.OnFailure(response => OnDisconnectClient(handle));
+			DeletePlayerEntity ();
         }
 
         private HeartbeatResponse OnHeartbeat(HeartbeatRequest request, ICommandCallerInfo callerinfo)
@@ -68,15 +60,22 @@ namespace Assets.Gamelogic.Player
             if (heartbeatsRemainingBeforeTimeout == 0)
             {
                 StopCoroutine(heartbeatCoroutine);
-                DeletePlayerEntity();
-                return;
-            }
+				DeletePlayerEntity();
+			}
             SetHeartbeat(heartbeatsRemainingBeforeTimeout - 1);
         }
 
         private void DeletePlayerEntity()
-        {
-            SpatialOS.Commands.DeleteEntity(ClientConnectionWriter, gameObject.EntityId());
+        {	
+			var playerCreatorQuery = Query.HasComponent<PlayerCreation>().ReturnOnlyEntityIds();
+			SpatialOS.WorkerCommands.SendQuery(playerCreatorQuery)
+				.OnSuccess(result => {
+					var playerCreatorEntityId = result.Entities.First.Value.Key;
+					SpatialOS.WorkerCommands.SendCommand(PlayerCreation.Commands.HandlePlayerDisconnect.Descriptor, new HandlePlayerDisconnectRequest(), playerCreatorEntityId)
+						.OnFailure(response => DeletePlayerEntity());
+					SpatialOS.Commands.DeleteEntity(ClientConnectionWriter, gameObject.EntityId());
+				})
+				.OnFailure(response => DeletePlayerEntity());
         }
     }
 }

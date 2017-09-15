@@ -21,9 +21,20 @@ namespace Assets.Gamelogic.Player
 		public AudioClip chompSound;
 		private AudioSource source;
 
+		private Canvas scoreCanvasUI2;
+		private Text bananaGUI;
+
 		private void OnEnable()
 		{
-		source = GetComponent<AudioSource>();
+			source = GetComponent<AudioSource>();
+
+
+			GameObject tempObj = GameObject.Find("ScoreCanvas2");
+			scoreCanvasUI2 = tempObj.GetComponent<Canvas>();
+
+			if (scoreCanvasUI2 != null) {
+				bananaGUI = scoreCanvasUI2.GetComponentInChildren<Text>();
+			}
 		}
 
 		private void OnCollisionEnter(Collision other)
@@ -38,6 +49,7 @@ namespace Assets.Gamelogic.Player
 				int newBananas = PlayerActionsWriter.Data.bananas + 1;
 				PlayerActionsWriter.Send(new PlayerActions.Update().SetBananas(newBananas));
 				source.PlayOneShot(chompSound,1f);
+				bananaGUI.text = newBananas + " bananas";
 			}
 
             if (other != null && other.gameObject.tag == "Player")

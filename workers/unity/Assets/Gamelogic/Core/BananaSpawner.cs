@@ -26,7 +26,7 @@ namespace Assets.Gamelogic.Core
 
 		private void OnEnable()
 		{
-			InvokeRepeating("CreateBanana", 0, 0.5f);
+			InvokeRepeating("CreateBanana", 0, 1f);
 		}
 
 		private void OnDisable()

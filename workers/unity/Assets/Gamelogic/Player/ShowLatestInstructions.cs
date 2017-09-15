@@ -22,6 +22,7 @@ namespace Assets.Gamelogic.Player
 
 		private Canvas scoreCanvasUI;
 		private Text totalPointsGUI;
+
 		private string latestInstructions;
 
 		private void OnEnable()
@@ -29,14 +30,15 @@ namespace Assets.Gamelogic.Player
 			GameObject tempObj = GameObject.Find("ScoreCanvas");
 			scoreCanvasUI = tempObj.GetComponent<Canvas>();
 			if (scoreCanvasUI != null) {
-				totalPointsGUI = scoreCanvasUI.GetComponentInChildren<Text> ();
+				totalPointsGUI = scoreCanvasUI.GetComponentInChildren<Text>();
 			}
-			instructionsReader.ComponentUpdated.Add (OnComponentUpdated);
+
+			instructionsReader.ComponentUpdated.Add(OnComponentUpdated);
 		}
 
 		private void OnDisable()
 		{
-			instructionsReader.ComponentUpdated.Remove (OnComponentUpdated);
+			instructionsReader.ComponentUpdated.Remove(OnComponentUpdated);
 		}
 
 		private void OnComponentUpdated(Instructions.Update update)

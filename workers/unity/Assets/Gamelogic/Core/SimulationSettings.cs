@@ -16,7 +16,7 @@ namespace Assets.Gamelogic.Core
         public static readonly uint TotalHeartbeatsBeforeTimeout = 3;
         public static readonly float HeartbeatSendingIntervalSecs = 3;
 
-		public static readonly int RequiredNumberOfPlayers = 4;
+		public static readonly int RequiredNumberOfPlayers = 2;
 
         public static readonly int TargetClientFramerate = 60;
         public static readonly int TargetServerFramerate = 60;
