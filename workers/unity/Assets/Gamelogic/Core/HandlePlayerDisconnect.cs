@@ -31,6 +31,7 @@ namespace Assets.Gamelogic.Core
 			update.SetNumberOfPlayersConnected (numberOfPlayersConnected);
 			if (numberOfPlayersConnected == 0) {
 				update.SetCanAddPlayers (true);
+				update.SetNumberOfPlayersAlive(0);
 			}
 			playerCreationWriter.Send (update);
 

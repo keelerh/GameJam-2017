@@ -11,6 +11,7 @@ namespace Assets.Gamelogic.Player
 	{	
 //		private ActionFirer actionFirer;
 		[Require] private PlayerActions.Writer PlayerActionsWriter;
+		[Require] private Instructions.Reader InstructionsReader;
 
 		private Canvas scoreCanvasUI2;
 		private Text bananaGUI;
@@ -34,8 +35,12 @@ namespace Assets.Gamelogic.Player
 		}
 
 		private void KillBanana()
-		{
+		{	
 			int newBananas = PlayerActionsWriter.Data.bananas - 1;
+
+			if (InstructionsReader.Data.instructionDescription == "You are the rogue monkey") {
+				newBananas++;
+			}
 
 			if (newBananas < 0) {
 //				Debug.Log("Trying to kill player " + this.gameObject.EntityId());

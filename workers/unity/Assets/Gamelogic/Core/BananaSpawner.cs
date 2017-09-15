@@ -26,7 +26,7 @@ namespace Assets.Gamelogic.Core
 
 		private void OnEnable()
 		{
-			InvokeRepeating("CreateBanana", 0, 1f);
+			InvokeRepeating("CreateBanana", 0, 1.3f);
 		}
 
 		private void OnDisable()
@@ -35,10 +35,10 @@ namespace Assets.Gamelogic.Core
 		}
 
 		private void CreateBanana()
-		{
+		{	
 			Debug.Log("CREATING BANANA");
-			var x = Random.Range(-35,35);
-			var z = Random.Range(-35,35);
+			var x = Random.Range(-35,30);
+			var z = Random.Range(-35,30);
 			var bananaCoordinates = new Vector3(x,0.3f,z);
 //			Debug.LogError(HealthWriter.HasAuthority);
 			SpatialOS.Commands.CreateEntity(HealthWriter, EntityTemplateFactory.CreateBananaTemplate(bananaCoordinates))

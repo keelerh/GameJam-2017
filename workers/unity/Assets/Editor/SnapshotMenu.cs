@@ -24,7 +24,7 @@ namespace Assets.Editor
 			snapshotEntities.Add(new EntityId(currentEntityId++), EntityTemplateFactory.CreateCubeTemplate());
 			snapshotEntities.Add(new EntityId(currentEntityId++), EntityTemplateFactory.CreateLaboratoryTemplate());
 //			snapshotEntities.Add(new EntityId(currentEntityId++), EntityTemplateFactory.CreateBananaTemplate());
-			PopulateSnapshotWithBananaEntities(ref snapshotEntities, ref currentEntityId);
+//			PopulateSnapshotWithBananaEntities(ref snapshotEntities, ref currentEntityId);
 
 			SaveSnapshot(snapshotEntities);
 		}

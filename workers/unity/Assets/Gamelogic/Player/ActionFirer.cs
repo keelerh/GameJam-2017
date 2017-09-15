@@ -1,4 +1,5 @@
 using UnityEngine;
+using Improbable.Core;
 using Improbable.Player;
 using Improbable.Unity.Visualizer;
 using Improbable.Unity;
@@ -16,10 +17,7 @@ namespace Assets.Gamelogic.Player
     {
 		[Require] private PlayerActions.Reader PlayerActionsReader;
         [Require] private Health.Writer HealthWriter;
-
-        private void Start()
-        {
-        }
+//		[Require] private PlayerCreation.Reader PlayerCreationReader;
         	
         private void OnEnable()
         {
@@ -70,10 +68,17 @@ namespace Assets.Gamelogic.Player
 
 
 		public void AttackPlayer(EntityId playerEntityId) 
-		{
-			SpatialOS.Commands
-				.SendCommand(HealthWriter, Health.Commands.TakeDamage.Descriptor, new DamageRequest(1000), playerEntityId)
-				.OnSuccess(OnDamageRequestSuccess)
+		{	
+			EntityId playerId = gameObject.EntityId();
+			EntityId killerId = SpatialOS.GetLocalEntityComponent<PlayerCreation>(new EntityId(1)).Get().Value.killerId;
+//			long playerEntityIdCopy = playerEntityId.Id;
+
+			SpatialOS.Commands.SendCommand(HealthWriter, Health.Commands.TakeDamage.Descriptor, new DamageRequest(1000), playerEntityId)
+				.OnSuccess(response => {
+					if(playerId != killerId && playerEntityId != killerId) {
+						HealthWriter.Send(new Health.Update().SetCurrentHealth(-10));
+					}
+				})
 				.OnFailure(OnDamageRequestFailure);
 		}
 

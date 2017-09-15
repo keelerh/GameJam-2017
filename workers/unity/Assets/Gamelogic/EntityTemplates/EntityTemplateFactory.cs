@@ -51,7 +51,7 @@ namespace Assets.Gamelogic.EntityTemplates
 				.AddComponent(new Instructions.Data(true, "Waiting for other players"), CommonRequirementSets.PhysicsOnly)
                 .AddComponent(new PlayerMovement.Data(), CommonRequirementSets.SpecificClientOnly(clientId))
                 .AddComponent(new Health.Data(1000), CommonRequirementSets.PhysicsOnly)
-				.AddComponent(new PlayerActions.Data(new Improbable.Collections.Map<EntityId,bool>(), 30), CommonRequirementSets.SpecificClientOnly(clientId))
+				.AddComponent(new PlayerActions.Data(new Improbable.Collections.Map<EntityId,bool>(), 20), CommonRequirementSets.SpecificClientOnly(clientId))
                 .Build();
 
             return template;

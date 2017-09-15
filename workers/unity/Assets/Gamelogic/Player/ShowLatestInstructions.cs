@@ -34,6 +34,7 @@ namespace Assets.Gamelogic.Player
 			}
 
 			instructionsReader.ComponentUpdated.Add(OnComponentUpdated);
+			totalPointsGUI.text = instructionsReader.Data.instructionDescription;
 		}
 
 		private void OnDisable()
@@ -43,6 +44,7 @@ namespace Assets.Gamelogic.Player
 
 		private void OnComponentUpdated(Instructions.Update update)
 		{
+			Debug.LogError (instructionsReader.Data.instructionDescription);
 			totalPointsGUI.text = instructionsReader.Data.instructionDescription;
 		}
 	}
