@@ -47,6 +47,7 @@ namespace Assets.Gamelogic.Player
         {	
 
 			if (HealthReader.Data.currentHealth <= 0) {
+				
 				return;
 			}
 
@@ -62,6 +63,10 @@ namespace Assets.Gamelogic.Player
                 source.PlayOneShot(stabSound,1f);
                 PlayerActionsWriter.Send(new PlayerActions.Update().AddStab(new Stab()));
             }
+
+			if (Input.GetKeyDown (KeyCode.Escape)) {
+				Application.Quit ();
+			}
         }
     }
 }
