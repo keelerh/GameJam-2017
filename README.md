@@ -4,16 +4,19 @@
 
 ## Introduction
 
-And Then There Was One is a murder mystery in which a troop of monkeys live in a research lab peacefully passing their time collecting bananas. Sadly one monkey has gone bonkers! This monkey thrives off tranquilizing all of the other monkeys in the lab one at a time. Can the innocent monkeys discover which of their peers has gone mad and tranquilize the offending monkey before it's too late?
+And Then There Was One is a murder mystery in which a troop of monkeys lives in a research lab peacefully passing their time collecting 🍌🍌🍌. Sadly one monkey has gone bonkers! The rogue monkey is tranquilizing the other monkeys in the lab one at a time. Can the innocent monkeys identify and defeat the rogue monkey before it’s too late?
 
 ## Gameplay
 
-At the beginning of the game one player is randomly assigned to be the murderer. The murderer tries to kill the other monkeys without arising the attention of the innocent monkeys. The murderous monkey wins if he/she kills all of the other monkeys. The innocent monkeys win if they can successfully identify the murderous monkey and tranquilize him/her.
+![Gameplay](workers/unity/gameplay.gif)
+
+At the beginning of the game one player is randomly assigned to be the murderer. The rogue monkey tries to kill the other monkeys without arising the attention of the innocent monkeys. The innocent monkeys win by correctly identifying and killing the rogue monkey. The rogue monkey wins if she/he is the last monkey standing.
 
 ### Rules
 
-* Innocent monkeys must intake bananas (by simply running over them), otherwise they will die from banana-deficiency. The mad monkey is not required to eat bananas (instead living off of the thrill of tranquilizing his/her peers).
-* If an innocent monkey incorrectly identifies the mad monkey, accidently tranquilizing another innocent monkey, both monkeys die.
+* Innocent monkeys must keep their banana count above zero or they will die from banana-deficiency
+* The rogue monkey is immune from banana-deficiency (instead living off murderous thrill)
+* If an innocent monkey incorrectly identifies and kills another innocent monkey, both monkeys die
   
 ### Controls
 
@@ -21,4 +24,6 @@ At the beginning of the game one player is randomly assigned to be the murderer.
 * **D:** right
 * **W:** forward
 * **S:** backward
-* **Space:** tranquilize
+* **Space:** kill
+
+<div style="text-align:center"><img src ="workers/unity/monkey.gif" />
